@@ -46,7 +46,7 @@ class Cipher:
     ##########################################################################
     def get_cipher_citation(self):
         # TODO: This function should return your citation(s)
-        return "https://www.geeksforgeeks.org/implementation-affine-cipher/ \nhttps://uregina.ca/~kozdron/Teaching/Cornell/135Summer06/Handouts/affine.pdf \n"
+        return "'Affine Ciphers, Decimation Ciphers, and Modular Arithmetic', University of Regina, 2006. \nLink: https://uregina.ca/~kozdron/Teaching/Cornell/135Summer06/Handouts/affine.pdf\n"
 
     def generate_affine_key(self, password, char_map, m):
         numeric_values = [char_map[char] for char in password] #Map password to numeric values
