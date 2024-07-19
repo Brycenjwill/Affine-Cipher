@@ -86,6 +86,7 @@ class Cipher:
         char_map  = self.create_char_map()
         a, b = self.generate_affine_key(password, char_map, 26)
         num_a, num_b = self.generate_affine_key(password, char_map, 10)
+        spec_a, spec_b = self.generate_affine_key(password, char_map, 32)
         
         ciphertext = []
         for char in plaintext:
@@ -96,7 +97,10 @@ class Cipher:
                 if char.isnumeric():
                     num = (num_a * ((ord(char)) - ord('0')) + num_b) % 10
                     ciphertext.append(chr(num + ord('0')))
-        
+                else: 
+                    num = (spec_a * ((char_map[char]) - char_map["!"]) + spec_b) % 32
+                    adj = str({i for i in char_map if char_map[i]==num+char_map["!"]})
+                    ciphertext.append(adj[2:3])
         return ''.join(ciphertext)
 
     ##########################################################################
@@ -104,13 +108,15 @@ class Cipher:
     # TODO: ADD description
     ##########################################################################
     def decrypt(self, ciphertext, password):
-        char_map = self.create_char_map()
+        char_map  = self.create_char_map()
         a, b = self.generate_affine_key(password, char_map, 26)
         num_a, num_b = self.generate_affine_key(password, char_map, 10)
+        spec_a, spec_b = self.generate_affine_key(password, char_map, 32)
         
         plaintext = []
         a_inv = pow(a, -1, 26)
         num_a_inv = pow(num_a, -1, 10)
+        spec_a_inv = pow(num_a, -1, 32)
 
         for char in ciphertext:
             if char.isalpha():
@@ -120,5 +126,10 @@ class Cipher:
                 if char.isnumeric():
                     num = (num_a_inv * ((ord(char)) - ord('0') - num_b)) % 10
                     plaintext.append((str(num)))
+                else: 
+                    num = (spec_a_inv * ((char_map[char]) - char_map["!"]) - spec_b) % 32
+                    adj = str({i for i in char_map if char_map[i]==char_map["!"]+num})
+                    plaintext.append(adj[2:3])
+
 
         return ''.join(plaintext)
