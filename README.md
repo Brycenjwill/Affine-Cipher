@@ -1,1 +1,2 @@
-# Affine Cipher including a Passkey by Brycen Williams
+# Affine Cipher 
+## by Brycen Williams
